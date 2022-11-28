@@ -306,10 +306,9 @@ public class RNTrackPlayer: RCTEventEmitter, AudioSessionControllerDelegate {
                                           bookmarkOptions: options["bookmarkOptions"] as? [String: Any])
         }
 
-        // We should only update the progress frequency if the user specified it explicitly
-        // or if we don't already have plans to emit progress events. This way, the user
-        // can updateOptions without providing the interval (and not then reset the interval
-        // inadvertently).
+        // We should only update the progress frequency if the user specified it
+        // explicitly. This way, you can updateOptions without providing the
+        // interval every time (and not clear the interval inadvertently).
         if let newFrequency = (options["progressUpdateEventInterval"] as? NSNumber) {
             configureProgressUpdateEvent(
                 interval: (newFrequency).doubleValue
