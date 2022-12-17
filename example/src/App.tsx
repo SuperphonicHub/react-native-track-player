@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { Capability } from 'react-native-track-player';
 
 import { Button, PlayerControls, Progress, TrackInfo } from './components';
 import { useCurrentTrack } from './hooks';
@@ -25,6 +25,16 @@ const App: React.FC = () => {
       if (isSetup && queue.length <= 0) {
         await QueueInitialTracksService();
       }
+
+      await TrackPlayer.updateOptions({
+        capabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SeekTo,
+          Capability.JumpForward,
+        ],
+        forwardJumpInterval: 60,
+      });
     }
 
     run();
@@ -38,11 +48,23 @@ const App: React.FC = () => {
     );
   }
 
+  async function update() {
+    await TrackPlayer.updateOptions({
+      capabilities: [
+        Capability.Play,
+        Capability.Pause,
+        Capability.SeekTo,
+        Capability.JumpForward,
+      ],
+    });
+  }
+
   return (
     <SafeAreaView style={styles.screenContainer}>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.contentContainer}>
         <View style={styles.topBarContainer}>
+          <Button title="Update Options" onPress={update} type="primary" />
           <Button
             title="Queue"
             onPress={() => console.log('TODO: implement queue interface')}
